@@ -1,5 +1,12 @@
 # Palo Alto Panorama to Terraform Converter
 
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE.md)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![GitHub release](https://img.shields.io/github/v/release/devnullNZ/Panorama2Terraform.svg)](https://github.com/devnullNZ/Panorama2Terraform/releases)
+[![GitHub issues](https://img.shields.io/github/issues/devnullNZ/Panorama2Terraform.svg)](https://github.com/devnullNZ/Panorama2Terraform/issues)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+
 A comprehensive Python utility to convert Palo Alto Panorama XML configuration exports into Terraform configuration files, **specifically designed to facilitate firewall migrations between different Palo Alto platforms**.
 
 ## 🎯 Purpose
