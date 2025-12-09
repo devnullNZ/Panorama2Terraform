@@ -5,7 +5,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/devnullNZ/Panorama2Terraform.svg)](https://github.com/devnullNZ/Panorama2Terraform/releases)
 [![GitHub issues](https://img.shields.io/github/issues/devnullNZ/Panorama2Terraform.svg)](https://github.com/devnullNZ/Panorama2Terraform/issues)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-![CI Status](https://github.com/devnullNZ/Panorama2Terraform/workflows/Python%20Syntax%20Check/badge.svg)
+[![Python Syntax Check](https://github.com/devnullNZ/Panorama2Terraform/actions/workflows/python-tests.yml/badge.svg)](https://github.com/devnullNZ/Panorama2Terraform/actions/workflows/python-tests.yml)
 
 A comprehensive Python utility to convert Palo Alto Panorama XML configuration exports into Terraform configuration files, **specifically designed to facilitate firewall migrations between different Palo Alto platforms**.
 
