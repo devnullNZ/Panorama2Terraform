@@ -11,9 +11,26 @@ venv/
 *.xml
 !examples/*.xml
 
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
 # Test outputs
 test_output/
+output_*/
+split_configs/
 *-tf/
+
+# Temporary files
+*.tmp
+*.log
 
 COVERAGE-ANALYSIS.md
 FILE_MANIFEST.txt
