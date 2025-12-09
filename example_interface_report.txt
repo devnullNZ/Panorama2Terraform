@@ -1,0 +1,105 @@
+================================================================================
+INTERFACE AND IP ADDRESS MIGRATION REPORT
+Generated for Firewall Migration Planning
+================================================================================
+
+This report lists all interfaces and their assigned IP addresses from the
+source configuration. Use this to plan interface mapping for the new platform.
+
+================================================================================
+INTERFACE SUMMARY
+================================================================================
+
+
+ETHERNET INTERFACES (4)
+--------------------------------------------------------------------------------
+
+Interface: ethernet1/1
+  Type: ethernet
+  Mode: layer3
+  Comment: Trust Interface - Internal Network
+  IPv4 Addresses:
+    - 10.1.1.1/24
+  IPv6 Addresses:
+    - 2001:db8::1/64
+  Management Profile: Ping-Only
+
+Interface: ethernet1/2
+  Type: ethernet
+  Mode: layer3
+  Comment: Untrust Interface - Internet Connection
+  IPv4 Addresses:
+    - 203.0.113.1/30
+  Management Profile: Allow-All
+
+Interface: ethernet1/3
+  Type: ethernet
+  Mode: layer3
+  Comment: DMZ Interface - Web Servers
+  IPv4 Addresses:
+    - 172.16.1.1/24
+
+Interface: ethernet1/4
+  Type: ethernet
+  Mode: layer2
+  Comment: Layer2 Interface for VLAN Trunk
+
+LOOPBACK INTERFACES (1)
+--------------------------------------------------------------------------------
+
+Interface: loopback.1
+  Type: loopback
+  Mode: layer3
+  Comment: Loopback for BGP
+  IPv4 Addresses:
+    - 1.1.1.1/32
+
+VLAN INTERFACES (2)
+--------------------------------------------------------------------------------
+
+Interface: vlan.10
+  Type: vlan
+  Mode: layer3
+  Comment: Management VLAN
+  IPv4 Addresses:
+    - 192.168.10.1/24
+  VLAN Tag: 10
+
+Interface: vlan.20
+  Type: vlan
+  Mode: layer3
+  Comment: Guest VLAN
+  IPv4 Addresses:
+    - 192.168.20.1/24
+  VLAN Tag: 20
+
+================================================================================
+MIGRATION CHECKLIST
+================================================================================
+
+1. Review interface naming differences between platforms
+2. Map source interfaces to target platform interfaces
+3. Verify IP addressing scheme is compatible
+4. Check for interface-specific features that may not translate
+5. Update zone and virtual router configurations accordingly
+6. Test connectivity after migration
+
+================================================================================
+PLATFORM MIGRATION NOTES
+================================================================================
+
+Common Interface Naming Patterns:
+
+  PA-200/500 Series:    ethernet1/1 - ethernet1/8
+  PA-800 Series:        ethernet1/1 - ethernet1/8
+  PA-3000 Series:       ethernet1/1 - ethernet1/20+
+  PA-5000 Series:       ethernet1/1 - ethernet1/24+
+  PA-7000 Series:       ethernet1/1 - ethernet1/48+ (per slot)
+  VM-Series:            ethernet1/1 - ethernet1/X (configurable)
+
+Remember:
+  - Management interface naming varies by platform
+  - Some platforms support additional interface types (QSFP, SFP+, etc.)
+  - Aggregate interfaces may have different limitations
+  - Verify transceiver compatibility for the new platform
+

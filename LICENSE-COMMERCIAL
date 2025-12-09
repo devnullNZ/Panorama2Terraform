@@ -1,0 +1,241 @@
+COMMERCIAL LICENSE AGREEMENT
+Palo Alto Panorama to Terraform Converter
+
+Copyright (c) 2025 GSW Systems
+
+═══════════════════════════════════════════════════════════════════════
+COMMERCIAL LICENSE - PROPRIETARY USE
+═══════════════════════════════════════════════════════════════════════
+
+This software is dual-licensed:
+1. AGPL v3 (GNU Affero General Public License v3) - Open Source
+2. Commercial License (this document) - Proprietary Use
+
+This Commercial License allows use without AGPL v3 restrictions.
+
+═══════════════════════════════════════════════════════════════════════
+1. GRANT OF LICENSE
+═══════════════════════════════════════════════════════════════════════
+
+Subject to the terms of this Agreement and payment of applicable fees,
+[Your Name/Organization] ("Licensor") grants you ("Licensee") a 
+non-exclusive, non-transferable license to:
+
+  ✓ Use the Software in proprietary applications
+  ✓ Modify the Software for internal use
+  ✓ Deploy the Software without releasing source code
+  ✓ Use the Software in commercial products/services
+  ✓ Use the Software in hosted/SaaS environments
+
+WITHOUT the following AGPL v3 requirements:
+  • No requirement to release your source code
+  • No requirement to release modifications
+  • No network copyleft obligations
+  • No requirement to license under AGPL v3
+
+═══════════════════════════════════════════════════════════════════════
+2. LICENSE TYPES & PRICING
+═══════════════════════════════════════════════════════════════════════
+
+2.1 SINGLE ORGANIZATION LICENSE
+    Scope: Use within a single legal entity
+    Price: Contact author for quote
+    Includes:
+      • Unlimited users within organization
+      • Unlimited devices/migrations
+      • Email support
+      • All updates during license period
+
+2.2 ENTERPRISE LICENSE
+    Scope: Use across multiple entities/subsidiaries
+    Price: Contact author for quote
+    Includes:
+      • All Single Organization features
+      • Priority support
+      • Dedicated support contact
+      • Custom feature requests consideration
+
+2.3 SERVICE PROVIDER LICENSE
+    Scope: For MSPs/consultants providing services to clients
+    Price: Contact author for quote
+    Includes:
+      • Use for multiple client organizations
+      • Unlimited end-client deployments
+      • Priority support
+      • Revenue sharing model available
+
+2.4 OEM/EMBEDDED LICENSE
+    Scope: Embedding in products for redistribution
+    Price: Negotiable
+    Contact: sales@gswsystems.com
+
+═══════════════════════════════════════════════════════════════════════
+3. RESTRICTIONS
+═══════════════════════════════════════════════════════════════════════
+
+Licensee MAY NOT:
+  ✗ Redistribute the Software to third parties
+  ✗ Remove or modify copyright notices
+  ✗ Sublicense the Software
+  ✗ Reverse engineer (except as required by law)
+  ✗ Use to create competing products
+
+═══════════════════════════════════════════════════════════════════════
+4. TERM AND TERMINATION
+═══════════════════════════════════════════════════════════════════════
+
+4.1 TERM
+    This license is valid for one (1) year from purchase date.
+    Licenses automatically renew unless terminated 30 days prior.
+
+4.2 TERMINATION
+    Either party may terminate with 30 days written notice.
+    Upon termination, Licensee must cease use of the Software.
+
+4.3 PERPETUAL OPTION
+    Available for 5x annual license fee.
+    Includes updates for 2 years.
+
+═══════════════════════════════════════════════════════════════════════
+5. SUPPORT AND UPDATES
+═══════════════════════════════════════════════════════════════════════
+
+5.1 UPDATES
+    • All bug fixes and security patches
+    • New features and enhancements
+    • Updated Terraform provider compatibility
+    • New object type support
+
+5.2 SUPPORT
+    Single Organization: Email support (48-hour response)
+    Enterprise: Priority support (24-hour response)
+    Service Provider: Priority support (24-hour response)
+
+5.3 SUPPORT CHANNELS
+    Email: support@gswsystems.com
+    Response times: Business days (Mon-Fri, 9am-5pm AEST)
+
+═══════════════════════════════════════════════════════════════════════
+6. WARRANTY AND LIABILITY
+═══════════════════════════════════════════════════════════════════════
+
+6.1 LIMITED WARRANTY
+    Software is provided with 90-day warranty that it will perform
+    substantially as described in the documentation.
+
+6.2 WARRANTY REMEDY
+    Licensor will use reasonable efforts to correct defects.
+    If unable to correct, Licensee may request refund.
+
+6.3 DISCLAIMER
+    EXCEPT AS STATED ABOVE, SOFTWARE IS PROVIDED "AS IS" WITHOUT
+    WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
+
+6.4 LIMITATION OF LIABILITY
+    IN NO EVENT SHALL LICENSOR BE LIABLE FOR:
+    • Indirect, incidental, or consequential damages
+    • Loss of profits or revenue
+    • Loss of data or business interruption
+    • Damages exceeding fees paid in last 12 months
+
+═══════════════════════════════════════════════════════════════════════
+7. INTELLECTUAL PROPERTY
+═══════════════════════════════════════════════════════════════════════
+
+7.1 OWNERSHIP
+    Licensor retains all rights, title, and interest in the Software.
+    This is a license, not a sale.
+
+7.2 MODIFICATIONS
+    Licensee owns modifications made to the Software.
+    Licensor may incorporate Licensee improvements into future versions.
+
+═══════════════════════════════════════════════════════════════════════
+8. CONFIDENTIALITY
+═══════════════════════════════════════════════════════════════════════
+
+Both parties agree to keep confidential information private.
+This includes pricing, source code, and business information.
+
+═══════════════════════════════════════════════════════════════════════
+9. PAYMENT TERMS
+═══════════════════════════════════════════════════════════════════════
+
+9.1 PAYMENT
+    • Due upon license purchase
+    • Invoices provided upon request
+
+9.2 RENEWAL
+    • Auto-renewal unless cancelled
+    • Notification 30 days before renewal
+    • Price lock for 2 years (then subject to change)
+
+9.3 REFUND POLICY
+    • 30-day money-back guarantee
+    • No questions asked
+    • Full refund if requested within 30 days
+
+═══════════════════════════════════════════════════════════════════════
+10. GENERAL PROVISIONS
+═══════════════════════════════════════════════════════════════════════
+
+10.1 GOVERNING LAW
+     This Agreement is governed by the laws of Australia.
+
+10.2 ENTIRE AGREEMENT
+     This Agreement constitutes the entire agreement between parties.
+
+10.3 AMENDMENTS
+     Modifications must be in writing and signed by both parties.
+
+10.4 SEVERABILITY
+     If any provision is invalid, remaining provisions remain in effect.
+
+10.5 ASSIGNMENT
+     Licensee may not assign this license without written consent.
+
+═══════════════════════════════════════════════════════════════════════
+11. CONTACT INFORMATION
+═══════════════════════════════════════════════════════════════════════
+
+For commercial licensing inquiries:
+
+  Name:     GSW Systems
+  Email:    info@gswsystems.com
+  
+  Sales:    sales@gswsystems.com
+  Support:  support@gswsystems.com
+
+═══════════════════════════════════════════════════════════════════════
+12. HOW TO PURCHASE
+═══════════════════════════════════════════════════════════════════════
+
+Step 1: Contact us at sales@gswsystems.com
+Step 2: Specify your use case and organization size
+Step 3: Receive quote and purchase agreement
+Step 4: Make payment
+Step 5: Receive license key and agreement
+
+
+═══════════════════════════════════════════════════════════════════════
+
+ACCEPTANCE
+
+By using this Software under a Commercial License, Licensee agrees to
+be bound by the terms of this Agreement.
+
+Licensor: GSW Systems
+Date: _______________
+Signature: _________________________
+
+
+Licensee: _________________________
+Date: _______________
+Signature: _________________________
+
+═══════════════════════════════════════════════════════════════════════
+
+For the AGPL v3 (Open Source) version, see LICENSE-AGPL
+No commercial license needed if you comply with AGPL v3 terms
+
+═══════════════════════════════════════════════════════════════════════

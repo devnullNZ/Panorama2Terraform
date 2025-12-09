@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<config version="10.0.0" urldb="paloaltonetworks">
+  <devices>
+    <entry name="localhost.localdomain">
+      <device-group>
+        <entry name="Production-DG">
+          <description>Production Device Group</description>
+          <address>
+            <entry name="Web-Server-1">
+              <ip-netmask>10.1.1.10/32</ip-netmask>
+              <description>Production Web Server</description>
+              <tag>
+                <member>Production</member>
+                <member>Web</member>
+              </tag>
+            </entry>
+            <entry name="DB-Server-1">
+              <ip-netmask>10.1.2.10/32</ip-netmask>
+              <description>Production Database Server</description>
+            </entry>
+            <entry name="Internal-Network">
+              <ip-netmask>10.0.0.0/8</ip-netmask>
+              <description>Internal RFC1918 Network</description>
+            </entry>
+            <entry name="DMZ-Network">
+              <ip-netmask>172.16.1.0/24</ip-netmask>
+            </entry>
+            <entry name="External-API">
+              <fqdn>api.example.com</fqdn>
+              <description>External API Endpoint</description>
+            </entry>
+          </address>
+          <address-group>
+            <entry name="Web-Servers">
+              <static>
+                <member>Web-Server-1</member>
+              </static>
+              <description>All web servers</description>
+            </entry>
+            <entry name="Database-Servers">
+              <static>
+                <member>DB-Server-1</member>
+              </static>
+            </entry>
+          </address-group>
+          <service>
+            <entry name="TCP-8080">
+              <protocol>
+                <tcp>
+                  <port>8080</port>
+                </tcp>
+              </protocol>
+              <description>Custom HTTP port</description>
+            </entry>
+            <entry name="TCP-3306">
+              <protocol>
+                <tcp>
+                  <port>3306</port>
+                </tcp>
+              </protocol>
+              <description>MySQL Database</description>
+            </entry>
+            <entry name="UDP-514">
+              <protocol>
+                <udp>
+                  <port>514</port>
+                </udp>
+              </protocol>
+              <description>Syslog</description>
+            </entry>
+          </service>
+          <service-group>
+            <entry name="Web-Services">
+              <members>
+                <member>service-http</member>
+                <member>service-https</member>
+                <member>TCP-8080</member>
+              </members>
+              <description>Web related services</description>
+            </entry>
+          </service-group>
+          <pre-rulebase>
+            <security>
+              <rules>
+                <entry name="Allow-Web-Traffic">
+                  <from>
+                    <member>Trust</member>
+                  </from>
+                  <to>
+                    <member>DMZ</member>
+                  </to>
+                  <source>
+                    <member>Internal-Network</member>
+                  </source>
+                  <destination>
+                    <member>Web-Servers</member>
+                  </destination>
+                  <application>
+                    <member>web-browsing</member>
+                    <member>ssl</member>
+                  </application>
+                  <service>
+                    <member>application-default</member>
+                  </service>
+                  <action>allow</action>
+                  <log-start>no</log-start>
+                  <log-end>yes</log-end>
+                  <description>Allow internal users to access web servers</description>
+                </entry>
+                <entry name="Allow-DB-Access">
+                  <from>
+                    <member>DMZ</member>
+                  </from>
+                  <to>
+                    <member>Trust</member>
+                  </to>
+                  <source>
+                    <member>Web-Servers</member>
+                  </source>
+                  <destination>
+                    <member>Database-Servers</member>
+                  </destination>
+                  <application>
+                    <member>mysql</member>
+                  </application>
+                  <service>
+                    <member>TCP-3306</member>
+                  </service>
+                  <action>allow</action>
+                  <log-end>yes</log-end>
+                  <description>Allow web servers to access database</description>
+                </entry>
+                <entry name="Block-Risky-Apps">
+                  <from>
+                    <member>any</member>
+                  </from>
+                  <to>
+                    <member>any</member>
+                  </to>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <application>
+                    <member>torrent</member>
+                    <member>bittorrent</member>
+                  </application>
+                  <service>
+                    <member>application-default</member>
+                  </service>
+                  <action>deny</action>
+                  <log-end>yes</log-end>
+                  <description>Block risky applications</description>
+                </entry>
+              </rules>
+            </security>
+            <nat>
+              <rules>
+                <entry name="Outbound-NAT">
+                  <from>
+                    <member>Trust</member>
+                  </from>
+                  <to-interface>Untrust</to-interface>
+                  <source>
+                    <member>Internal-Network</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <service>any</service>
+                  <source-translation>
+                    <dynamic-ip-and-port>
+                      <translated-address>
+                        <member>Untrust-Interface</member>
+                      </translated-address>
+                    </dynamic-ip-and-port>
+                  </source-translation>
+                  <description>Outbound NAT for internal users</description>
+                </entry>
+                <entry name="Inbound-Web-NAT">
+                  <from>
+                    <member>Untrust</member>
+                  </from>
+                  <to-interface>DMZ</to-interface>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>Public-IP</member>
+                  </destination>
+                  <service>service-http</service>
+                  <destination-translation>
+                    <translated-address>10.1.1.10</translated-address>
+                    <translated-port>80</translated-port>
+                  </destination-translation>
+                  <description>Inbound NAT for web server</description>
+                </entry>
+              </rules>
+            </nat>
+          </pre-rulebase>
+        </entry>
+      </device-group>
+      <shared>
+        <address>
+          <entry name="Google-DNS-1">
+            <ip-netmask>8.8.8.8/32</ip-netmask>
+            <description>Google Public DNS</description>
+          </entry>
+          <entry name="Google-DNS-2">
+            <ip-netmask>8.8.4.4/32</ip-netmask>
+            <description>Google Public DNS Secondary</description>
+          </entry>
+        </address>
+        <address-group>
+          <entry name="Public-DNS-Servers">
+            <static>
+              <member>Google-DNS-1</member>
+              <member>Google-DNS-2</member>
+            </static>
+            <description>Public DNS servers</description>
+          </entry>
+        </address-group>
+      </shared>
+    </entry>
+  </devices>
+</config>

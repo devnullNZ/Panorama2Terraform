@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Terraform
+*.tfstate
+.terraform/
+
+# Customer data - DON'T commit actual configs!
+*.xml
+!examples/*.xml
+
+# Test outputs
+test_output/
+*-tf/
+
+COVERAGE-ANALYSIS.md
+FILE_MANIFEST.txt
+FINAL-SUMMARY-DUAL-LICENSING.md
+LICENSING-QUICK-START.txt
+MULTI-VR-FIX.md
+QUICK-CHECKLIST.txt 
+
