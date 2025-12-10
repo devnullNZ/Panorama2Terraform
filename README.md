@@ -411,7 +411,7 @@ This project is **dual-licensed**:
 
 ## 📊 Version History
 
-### v4.0.2 (December 2024) - Multi-VR Fix ⭐
+### v4.0.2 (December 2025) - Multi-VR Fix ⭐
 **🐛 Fixed: Multiple Virtual Routers**
 - **Critical Fix:** Virtual routers missing when names duplicated across templates
 - Added template-aware parsing with interface signature deduplication
@@ -420,7 +420,7 @@ This project is **dual-licensed**:
 - See [MULTI-VR-FIX.md](MULTI-VR-FIX.md) for technical details
 - ⚠️ **If you have multiple templates with VRs, regenerate your files**
 
-### v4.0.1 (December 2024) - CRITICAL FIX ⭐
+### v4.0.1 (December 2025) - CRITICAL FIX ⭐
 **🐛 Fixed: Shared Object References**
 - **Critical Fix:** Objects with empty values/members in Terraform output
 - Added detection and filtering of reference-only entries (entries with only `<id>` tags)
@@ -430,7 +430,7 @@ This project is **dual-licensed**:
 - See [SHARED-OBJECT-REFERENCE-FIX.md](SHARED-OBJECT-REFERENCE-FIX.md) for technical details
 - ⚠️ **If you used v4.0.0, regenerate your Terraform files**
 
-### v4.0.0 (December 2024) - Production Enhancement
+### v4.0.0 (December 2025) - Production Enhancement
 **🚀 Major Release**
 - Added 16 new object types (tags, custom URLs, app groups/filters, external lists, decryption, PBF, etc.)
 - Expanded from 20 to 36 object types (80% increase)
@@ -440,7 +440,7 @@ This project is **dual-licensed**:
 - 100% success rate on production data
 - Applied AGPL v3 + Commercial dual licensing
 
-### v3.0 (November 2024) - VPN & Routing
+### v3.0 (November 2025) - VPN & Routing
 **🔐 Advanced Networking**
 - Added BGP support with peer configuration
 - Added OSPF support with area configuration  
@@ -448,7 +448,7 @@ This project is **dual-licensed**:
 - Added device group splitting utility
 - Added multi-VR migration workflows
 
-### v2.0 (October 2024) - Network Objects
+### v2.0 (October 2025) - Network Objects
 **🌐 Network Infrastructure**
 - Added zone support
 - Added interface support (ethernet, VLAN, loopback, tunnel, aggregate)
@@ -456,7 +456,7 @@ This project is **dual-licensed**:
 - Added static route support
 - Comprehensive documentation
 
-### v1.0 (September 2024) - Initial Release
+### v1.0 (September 2025) - Initial Release
 **🎯 Foundation**
 - Basic object support (addresses, services, rules)
 - Security policy conversion
