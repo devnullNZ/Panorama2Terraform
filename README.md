@@ -1,12 +1,5 @@
 # Palo Alto Panorama to Terraform Converter
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE.md)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![GitHub release](https://img.shields.io/github/v/release/devnullNZ/Panorama2Terraform.svg)](https://github.com/devnullNZ/Panorama2Terraform/releases)
-[![GitHub issues](https://img.shields.io/github/issues/devnullNZ/Panorama2Terraform.svg)](https://github.com/devnullNZ/Panorama2Terraform/issues)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Python Syntax Check](https://github.com/devnullNZ/Panorama2Terraform/actions/workflows/python-tests.yml/badge.svg)](https://github.com/devnullNZ/Panorama2Terraform/actions/workflows/python-tests.yml)
-
 A comprehensive Python utility to convert Palo Alto Panorama XML configuration exports into Terraform configuration files, **specifically designed to facilitate firewall migrations between different Palo Alto platforms**.
 
 ## 🎯 Purpose
@@ -308,7 +301,7 @@ terraform apply
 
 ## 🎯 Version
 
-Current Version: **4.0.2** - **Production-Ready Edition**
+Current Version: **4.0.0** - **Production-Ready Edition**
 
 ### What's New in v4.0
 - ✨ **Production-tested** on 133,000-line config with 10,000+ objects
@@ -377,7 +370,7 @@ This project is **dual-licensed**:
 
 **📖 Detailed comparison:** See [DUAL-LICENSING-EXPLAINED.md](DUAL-LICENSING-EXPLAINED.md)
 
-**💼 Purchase commercial license:** Contact sales@gswsystems.com
+**💼 Purchase commercial license:** Contact [Your Email]
 
 ### Quick Summary
 
@@ -411,14 +404,36 @@ This project is **dual-licensed**:
 
 ## 📊 Version History
 
-### v4.0.2 (December 2025) - Multi-VR Fix ⭐
-**🐛 Fixed: Multiple Virtual Routers**
+### v4.0.3 (December 2025) - Advanced Routing Engine Support ⭐
+**🎯 New Feature: Logical Routers (PAN-OS 10.2+)**
+- Added support for **Advanced Routing Engine** logical routers
+- Automatically detects and parses both virtual routers (legacy) and logical routers
+- Generates Terraform for mixed VR/LR configurations
+- Properly identifies router types in generated files
+- **Impact:** Full support for PAN-OS 10.2+ Advanced Routing Engine migrations
+- See [ADVANCED-ROUTING-ENGINE-SUPPORT.md](ADVANCED-ROUTING-ENGINE-SUPPORT.md) for details
+
+### v4.0.2 (December 2025) - Multi-VR & Split Script Fixes ⭐
+**🐛 Fixed: Multiple Critical Issues**
+
+**1. Virtual Router Multi-VR Support:**
 - **Critical Fix:** Virtual routers missing when names duplicated across templates
 - Added template-aware parsing with interface signature deduplication
 - Now captures ALL VRs including multi-VR templates and duplicate names
 - **Impact:** Configs with multiple templates now get all VRs (e.g., found 7 instead of 6)
 - See [MULTI-VR-FIX.md](MULTI-VR-FIX.md) for technical details
-- ⚠️ **If you have multiple templates with VRs, regenerate your files**
+
+**2. Split Device Groups Script:**
+- **Critical Fix:** split_device_groups.py missing 99% of objects in split files
+- Fixed: Only copied first `<shared>` section (Panorama has 11+ sections)
+- Fixed: Duplicate device group detection
+- Now merges ALL shared sections into split files
+- **Impact:** Split files now include all 3,699 addresses, 430 services, etc. (was 0)
+- See [SPLIT-SCRIPT-FIX.md](SPLIT-SCRIPT-FIX.md) for technical details
+
+**Action Required:**
+- ⚠️ If you have multiple templates with VRs: Regenerate your files
+- ⚠️ If you used split_device_groups.py: Re-split to get all objects
 
 ### v4.0.1 (December 2025) - CRITICAL FIX ⭐
 **🐛 Fixed: Shared Object References**

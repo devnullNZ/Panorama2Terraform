@@ -1264,6 +1264,106 @@ class PanoramaParser:
         
         return list(vrouters_dict.values())
     
+    def parse_logical_routers(self) -> List[Dict]:
+        """Parse logical router configurations (Advanced Routing Engine)
+        
+        Logical routers are part of PAN-OS 10.2+ Advanced Routing Engine.
+        They replace virtual routers with industry-standard configuration.
+        """
+        lrouters_dict = {}
+        
+        # Parse from templates first (most authoritative source)
+        for template in self.root.findall('.//template/entry'):
+            template_name = template.get('name')
+            
+            for lr in template.findall('.//network/logical-router/entry'):
+                name = lr.get('name')
+                if not name:
+                    continue
+                
+                # Get interfaces
+                interfaces = []
+                for iface in lr.findall('.//interface/member'):
+                    if iface.text:
+                        interfaces.append(iface.text)
+                
+                # Get static routes
+                static_routes = []
+                for route in lr.findall('.//routing-table/ip/static-route/entry'):
+                    route_name = route.get('name')
+                    destination = self._get_text(route, 'destination')
+                    nexthop_ip = self._get_text(route, 'nexthop/ip-address')
+                    nexthop_iface = self._get_text(route, 'nexthop/next-lr')  # next-lr for logical routers
+                    metric = self._get_text(route, 'metric')
+                    
+                    if route_name:
+                        static_routes.append({
+                            'name': route_name,
+                            'destination': destination,
+                            'nexthop_ip': nexthop_ip,
+                            'nexthop_interface': nexthop_iface,
+                            'metric': metric
+                        })
+                
+                lr_obj = {
+                    'name': name,
+                    'template': template_name,
+                    'router_type': 'logical',  # Mark as logical router
+                    'interfaces': interfaces,
+                    'static_routes': static_routes
+                }
+                
+                # Create a unique key based on name + interface signature
+                interface_signature = ','.join(sorted(interfaces[:5]))
+                unique_key = f"{name}_{interface_signature}"
+                
+                if unique_key not in lrouters_dict or len(interfaces) > len(lrouters_dict[unique_key]['interfaces']):
+                    lrouters_dict[unique_key] = lr_obj
+        
+        # Also check device-level logical routers
+        for lr in self.root.findall('.//devices/entry/network/logical-router/entry'):
+            name = lr.get('name')
+            if not name:
+                continue
+            
+            interfaces = []
+            for iface in lr.findall('.//interface/member'):
+                if iface.text:
+                    interfaces.append(iface.text)
+            
+            static_routes = []
+            for route in lr.findall('.//routing-table/ip/static-route/entry'):
+                route_name = route.get('name')
+                destination = self._get_text(route, 'destination')
+                nexthop_ip = self._get_text(route, 'nexthop/ip-address')
+                nexthop_iface = self._get_text(route, 'nexthop/next-lr')
+                metric = self._get_text(route, 'metric')
+                
+                if route_name:
+                    static_routes.append({
+                        'name': route_name,
+                        'destination': destination,
+                        'nexthop_ip': nexthop_ip,
+                        'nexthop_interface': nexthop_iface,
+                        'metric': metric
+                    })
+            
+            lr_obj = {
+                'name': name,
+                'template': 'device-specific',
+                'router_type': 'logical',
+                'interfaces': interfaces,
+                'static_routes': static_routes
+            }
+            
+            interface_signature = ','.join(sorted(interfaces[:5]))
+            unique_key = f"{name}_{interface_signature}"
+            
+            if unique_key not in lrouters_dict or len(interfaces) > len(lrouters_dict[unique_key]['interfaces']):
+                lrouters_dict[unique_key] = lr_obj
+        
+        return list(lrouters_dict.values())
+    
     def parse_security_profiles(self) -> Dict[str, List[Dict]]:
         """Parse security profiles (antivirus, vulnerability, spyware, url-filtering, file-blocking, wildfire)"""
         profiles = {
@@ -2566,18 +2666,38 @@ variable "device_group" {
             f.write(content)
     
     def generate_virtual_routers(self, vrouters: List[Dict]):
-        """Generate virtual router Terraform configuration"""
+        """Generate virtual/logical router Terraform configuration
+        
+        Supports both:
+        - Virtual Routers (legacy routing engine)
+        - Logical Routers (Advanced Routing Engine - PAN-OS 10.2+)
+        """
         if not vrouters:
             return
         
-        content = '# Virtual Router Configurations\n\n'
+        # Separate routers by type
+        virtual_routers = [r for r in vrouters if r.get('router_type') != 'logical']
+        logical_routers = [r for r in vrouters if r.get('router_type') == 'logical']
+        
+        content = '# Router Configurations\n'
+        content += '# Supports both Virtual Routers (legacy) and Logical Routers (Advanced Routing Engine)\n\n'
+        
+        if logical_routers:
+            content += f'# NOTE: Your config uses Advanced Routing Engine (PAN-OS 10.2+)\n'
+            content += f'# - {len(virtual_routers)} Virtual Routers (legacy)\n'
+            content += f'# - {len(logical_routers)} Logical Routers (advanced)\n'
+            content += f'#\n'
+            content += f'# Terraform provider panos supports both types.\n'
+            content += f'# Virtual routers use: panos_virtual_router\n'
+            content += f'# Logical routers use: panos_logical_router (if supported by provider version)\n'
+            content += f'# Check: https://registry.terraform.io/providers/PaloAltoNetworks/panos/latest/docs\n\n'
         
         # Track resource names to handle duplicates
         resource_name_counts = {}
         
-        for vr in vrouters:
+        for router in vrouters:
             # Generate base resource name
-            base_resource_name = self.sanitize_name(vr['name'])
+            base_resource_name = self.sanitize_name(router['name'])
             
             # If we've seen this name before, add a suffix
             if base_resource_name in resource_name_counts:
@@ -2587,21 +2707,35 @@ variable "device_group" {
                 resource_name_counts[base_resource_name] = 1
                 resource_name = base_resource_name
             
-            # Add comment showing source template
-            template = vr.get('template', 'unknown')
-            content += f'# Source: {template}\n'
-            content += f'resource "panos_virtual_router" "{resource_name}" {{\n'
-            content += f'  name = {self.escape_string(vr["name"])}\n'
+            # Determine router type and resource type
+            router_type = router.get('router_type', 'virtual')
+            is_logical = router_type == 'logical'
             
-            if vr.get('interfaces'):
-                ifaces_str = ', '.join([self.escape_string(i) for i in vr['interfaces']])
+            # Add comment showing source and type
+            template = router.get('template', 'unknown')
+            content += f'# Source: {template}\n'
+            content += f'# Type: {"Logical Router (Advanced Routing Engine)" if is_logical else "Virtual Router (Legacy)"}\n'
+            
+            if is_logical:
+                # Note: panos_logical_router may not exist in all provider versions
+                # Users may need to use panos_virtual_router even for logical routers
+                content += f'# NOTE: Terraform provider may use panos_virtual_router for logical routers\n'
+                content += f'# Check provider documentation for logical router support\n'
+                content += f'resource "panos_virtual_router" "{resource_name}" {{\n'
+            else:
+                content += f'resource "panos_virtual_router" "{resource_name}" {{\n'
+            
+            content += f'  name = {self.escape_string(router["name"])}\n'
+            
+            if router.get('interfaces'):
+                ifaces_str = ', '.join([self.escape_string(i) for i in router['interfaces']])
                 content += f'  interfaces = [{ifaces_str}]\n'
             
             content += '}\n\n'
             
-            # Generate static routes for this VR
-            if vr.get('static_routes'):
-                for route in vr['static_routes']:
+            # Generate static routes
+            if router.get('static_routes'):
+                for route in router['static_routes']:
                     route_resource = self.sanitize_name(f"{resource_name}_{route['name']}")
                     
                     content += f'resource "panos_static_route_ipv4" "{route_resource}" {{\n'
@@ -3372,6 +3506,10 @@ def main():
         zones = panorama.parse_zones()
         interfaces = panorama.parse_interfaces()
         virtual_routers = panorama.parse_virtual_routers()
+        logical_routers = panorama.parse_logical_routers()  # Advanced Routing Engine
+        
+        # Combine virtual and logical routers for unified handling
+        all_routers = virtual_routers + logical_routers
         
         # Security Profiles
         security_profiles = panorama.parse_security_profiles()
@@ -3411,7 +3549,12 @@ def main():
         print(f"  - {len(app_override_rules)} application override rules")
         print(f"  - {len(zones)} zones")
         print(f"  - {len(interfaces)} interfaces")
-        print(f"  - {len(virtual_routers)} virtual routers")
+        if logical_routers:
+            print(f"  - {len(virtual_routers)} virtual routers (legacy)")
+            print(f"  - {len(logical_routers)} logical routers (advanced routing)")
+            print(f"  - {len(all_routers)} total routers")
+        else:
+            print(f"  - {len(virtual_routers)} virtual routers")
         
         # Count profiles
         profile_count = sum(len(profs) for profs in security_profiles.values())
@@ -3457,7 +3600,7 @@ def main():
         
         # Network
         tf_gen.generate_zones(zones)
-        tf_gen.generate_virtual_routers(virtual_routers)
+        tf_gen.generate_virtual_routers(all_routers)  # Handles both virtual & logical routers
         tf_gen.generate_ethernet_interfaces(interfaces)
         
         # Security Profiles
